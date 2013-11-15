@@ -1,0 +1,88 @@
+#!/usr/bin/perl -w
+
+use strict;
+
+# This uses every kludge I could think of to cut down the size of the datafile
+# You have been warned.
+
+$/="\0\012";
+
+print "#include \"japanese_data.h\"\n\n";
+
+print 'const unsigned short japanese_kanjitab[]= { ';
+my $current="";
+my @dict;
+my $num=1;
+my $off=0;
+my $coff=0;
+my $orig_entries=0;
+
+my $kanastr=""; my %kanaidx=(); my $ckana="";
+
+while (<>)
+{
+  chomp;
+  $orig_entries++;
+  my ($kana, $w)=split("\0 ");
+  if ($current ne $kana)
+  {
+    my $tmp=""; my $n=0;
+    $n++ while (substr($kana, $n*2, 2) eq substr($current, $n*2, 2));
+    $tmp=chr($n);
+    $tmp.=substr($kana, ($n++)*2+1, 1) while ($n*2 < length($kana));
+    if (!exists $kanaidx{$tmp})
+    {
+      $kanaidx{$tmp}=length($kanastr);
+      $kanastr.=$tmp;
+    }
+    if ($num>62) { die "found a group of more than 62 homonyms - argh"; }
+    if ($current) { push @dict, $kanaidx{$ckana}, $coff, $num; }
+    $current=$kana; $num=1; $coff=$off; $ckana=$tmp; 
+  }
+  else { $num++; };
+
+  my @w=unpack("n*", $w);
+  my $first=1;
+  while (@w)
+  {
+    my $a=shift @w;
+    if ($a < 0x3000 || $a > 0xafff) 
+    {
+      warn ("Character out of range : $a at line $.");
+    }
+    print sprintf("0x%x", $a-0x3000 + $first*0x8000);
+    $first=0;
+    if (@w) { print ", "; }
+  }
+  if (!eof) { print ", \n"; };
+  $off+=length($w)/2;
+}
+
+print " };\n\n";
+
+print "const unsigned char japanese_kanatab[] = { \n  ";
+for (my $i=0; $i<length($kanastr); $i++)
+{
+  print sprintf("0x%x, ", ord(substr($kanastr, $i, 1)));
+  if ($i%10 == 9) { print "\n  "; }
+}
+print "0x3f };\n\n";
+
+my $kana_entries=scalar @dict / 3;
+print "const dict_t japanese_dict[] = {\n";
+while (@dict)
+{
+  my $w=shift @dict; my $o=shift @dict; my $n=shift @dict;
+  if ($o > 0x7fffff) { die "kanji table too long - can't kludge properly ^^;"; }
+  print "  { $w, ";
+  print $o + 0x1000000 * $n;
+  print " },\n";
+}
+
+print "  { ", length($kanastr), ", 0 } \n};\n";
+
+print STDERR "jp_data_toc.pl : processed $orig_entries dictionary entries\n";
+print STDERR "                 found ", $kana_entries, " phonetic entries\n";
+print STDERR "                 printed ", 1+length($kanastr), " bytes of phonetic table\n";
+print STDERR "                 printed ", $off, " words of dictionary table\n";
+

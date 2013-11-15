@@ -1,0 +1,219 @@
+This input methods allows one to input Japanese text - both kana and kanji.
+This is done using latin transliterations; this method is _not_ suitable
+for use with a Japanese keyboard.
+
+  KANA INPUT
+
+This IM accepts both the Hepburn and Kunrei systems of transliteration, 
+as far as this is possible without causing ambiguity. (A complete list of
+accepted transliterations is available at the end of this document.)
+Hiragana are input in lowercase and katakana in uppercase (actually, the
+relevant factor is the case of the first letter in the transliteration of
+the current character).
+
+Roman letters which have not yet been used to form a character are displayed
+on the termim status line. If this buffer is not empty, you can use the
+Backspace (or Control-H) key to remove one letter from it; when the buffer is
+empty, the backspace character is passed on to the application.  Likewise, the
+Control-C and Control-D keys cause the buffer to be emptied if it is not,
+and are passed on to the application if it is. The Escape key causes the
+buffer to be emptied, but is also passed on to the application in all cases
+(this is necessary in order not to break up terminal control sequences.)
+
+In addition, when the buffer is empty, a few keys are used to input Japanese
+punctuation - again, a list is available at the end of this document. The
+input method also uses the backquote (`) and tilde (~) characters to switch
+to kanji input; anything else is passed on to the application.
+
+
+  KANJI INPUT
+
+The backquote (`) key is used to look up a word in the IM's dictionary.
+When you press the backquote key, the backquote sign appears on the left
+on the termim status line, and any text you subsequently enter is not
+passed on to the application, but instead displayed on the status line.
+
+The text on the status line can be followed by:
+ - suspension marks (...): this means that the current text does not
+   correspond to any dictionary entry, but is a prefix of one or more
+   entries.
+   e.g. `hira yields `ひら... on the status line
+ - (***): this means there are no dictionary entries starting with the
+   current text - so either you've made a spelling mistake or you're
+   trying to input a word termim doesn't know of, in which case see
+   "Direct kanji selection" below.
+   e.g. `aaa yields `あああ (***) on the status line
+ - A word in kanji, along with an index number
+   e.g `kanji yields `かんじ (1/9:感じ)
+   This means that 感じ is the first of nine words spelt かんじ in the
+   dictionary. You can then use the < and > keys to scroll through the
+   available words.
+
+When a matching word has been found, the Space and Return keys cause the
+corresponding word to be sent to the application. When no word from the
+dictionary match the current content of the buffer, the contents of the
+buffer are sent as hiragana. The Tab key causes the contents of the buffer
+to be sent as hiragana, regardless of whether a matching word has been
+found. The Backspace key works as you'd expect, deleting first latin 
+characters that have not been used to form kana yet, then kanas, and
+aborting the lookup if the buffer was empty. The Escape, Control-C and
+Control-D keys abort the lookup, losing the contents of the buffer; the
+Escape character is also passed on to the application. 
+
+Note that the dictionary does not include any support for grammatical
+inflections - you need to input the dictionary form and then correct it
+manually.
+
+  KANJI SELECTION
+
+Kanji selection allows you to select a kanji to be sent to the application
+by radical and stroke-count; this is useful if you want to enter a word that
+doesn't appear in the dictionary. (there is currently no way of adding a
+word to the dictionary short of recompiling termim). It is accessed by
+pressing the ~ key from the main mode. When in kanji selection mode, the
+status line looks like the following:
+
+R85(水) S+4 (2/5):1.汶 2.汸 3.汹 4.決 5.汻 6.汽 7.汾 8.沁 9.沂 0.沃
+
+This means you're currently viewing kanji classified under radical 85
+(water), with 4 extra strokes, and these are kanji 11-20 out of 41
+to 50 available (i.e. screen 2/5). The [ and ] keys will scroll through
+the radicals; the { and } keys do the same but by increments of 10. 
+The + (or =) and - (or _) keys increase and decrease the additional
+stroke count; the < and > keys let you scroll through the kanji available
+for the currently selected radical and stroke count. 0-9 cause the 
+corresponding kanji to be sent to the application; Return is synonymous
+with 1 if there's only one kanji available.
+
+As usual, Escape, Control-C and Control-D abort to the default input mode,
+with Escape also being passed on to the application.
+
+Note that kanji selection uses the traditional radicals (from the Unihan
+database) and NOT e.g. the simplified Nelson radicals; for instance, be
+wary of the distinction between radical 74 (月) and the variant form of
+radical 130 (肉).
+
+  ACCEPTED TRANSLITERATIONS FOR KANA:
+
+	あ	い	う	え	お
+	a	i	u	e	o
+
+	か	き	く	け	こ
+	ka	ki/kyi	ku	ke	ko
+
+	が	ぎ	ぐ	げ	ご
+	ga	gi/gyi	gu	ge	go
+
+	さ	し	す	せ	そ
+	sa	si/shi	su	se	so
+                 /syi
+
+	ざ	じ	ず	ぜ	ぞ
+	za	zi/ji	zu	ze	zo
+		 /zyi
+	
+	た	ち	つ	て	と
+	ta	ti/chi	tu/tsu	te	to
+		 /tyi
+
+	だ	ぢ	づ	で	ど
+	da	di/dji	du/dzu	de	do
+		 /dyi
+
+	な	に	ぬ	ね	の
+	na	ni/nyi	nu	ne	no
+
+	は	ひ	ふ	へ	ほ
+	ha	hi/hyi	hu/fu	he	ho
+
+	ば	び	ぶ	べ	ぼ
+	ba	bi/byi	bu	be	bo
+
+	ぱ	ぴ	ぷ	ぺ	ぽ
+	pa	pi/pyi	pu	pe	po
+
+	ま	み	む	め	も
+	ma	mi/myi	mu	me	mo
+
+	や		ゆ		よ
+	ya		yu		yo
+
+	ら	り	る	れ	ろ
+	ra/la	ri/ryi	ru/lu	re/le	ro/lo
+                 /li/lyi
+
+	わ	ゐ		ゑ	を
+	wa	wi		we	wo
+
+	ん
+	n'
+
+(Note: for the ん kana, the final apostrophe is only mandatory in the
+ambiguous cases (e.g. んあ vs. な and んや vs. にゃ) or if you want to
+input a non-kana character next)
+
+	きゃ		きゅ		きょ
+	kya		kyu		kyo
+
+	ぎゃ		ぎゅ		ぎょ
+	gya		gyu		gyo
+
+	しゃ		しゅ		しょ
+	sha/sya		shu/syu		sho/syo
+
+	じゃ		じゅ		じょ
+	ja/zya		ju/zyu		jo/zyo
+
+	ちゃ		ちゅ		ちょ
+	cha/tya		chu/tyu		cho/tyo
+
+	ぢゃ		ぢゅ		ぢょ
+	dja/dya		dju/dyu		djo/dyo
+
+	にゃ		にゅ		にょ
+	nya		nyu		nyo
+
+	ひゃ		ひゅ		ひょ
+	hya		hyu		hyo
+
+	びゃ		びゅ		びょ
+	bya		byu		byo
+
+	ぴゃ		ぴゅ		ぴょ
+	pya		pyu		pyo
+
+	みゃ		みゅ		みょ
+	mya		myu		myo
+
+	りゃ		りゅ		りょ
+	rya/lya		ryu/lyu		ryo/lyo
+
+
+	ぁ	ぃ	ぅ	ぇ	ぉ
+	xa	xi	xu	xe	xo
+
+
+The small 'tsu' kana (っ) is obtained by doubling the following
+consonant (unless it's an n or an m, in which case doubling yields
+a ん instead). For っち, both the cchi and tchi transliterations are
+supported.
+
+EXTRA CHARACTERS AVAILABLE IN THE MAIN INPUT MODE:
+
+[-]	ー	U+30FC	KATAKANA-HIRAGANA PROLONGED SOUND MARK
+[*]	・	U+30FB	KATAKANA MIDDLE DOT
+[.]	。	U+3002	IDEOGRAPHIC FULL STOP
+[,]	、	U+3001	IDEOGRAPHIC COMMA
+[(]	「	U+300C	LEFT CORNER BRACKET
+[)]	」	U+300D	RIGHT CORNER BRACKET
+[[]	『	U+300E	LEFT WHITE CORNER BRACKET
+[]]	』	U+300F	RIGHT WHITE CORNER BRACKET
+[<]	〈	U+3008	LEFT ANGLE BRACKET
+[>]	〉	U+3009	RIGHT ANGLE BRACKET
+[{]	《	U+300A	LEFT DOUBLE ANGLE BRACKET
+[}]	》	U+300B	RIGHT DOUBLE ANGLE BRACKET
+[']		U+309A	COMBINING KATAKANA-HIRAGANA SEMI-VOICED SOUND MARK
+["]		U+3099	COMBINING KATAKANA-HIRAGANA VOICED SOUND MARK
+[+]	々	U+3005	IDEOGRAPHIC ITERATION MARK
+
+

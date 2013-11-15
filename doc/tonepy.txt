@@ -1,0 +1,7 @@
+This input method allows to type simplified Chinese characters using their
+sound and tone, according to the pinyin translitteration. Type the sound,
+then the tone (a digit ranging from 1 to 5), and if there are several
+matching characters, select in the list (in the status line) by typing the
+corresponding digit.  If there are a lot of matching characters, you can
+scroll in the list by using the < and > keys.  The characters are roughly
+sorted according to their frequency, and space allows to select the first.

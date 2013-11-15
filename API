@@ -1,0 +1,87 @@
+Terminal Input Method
+
+
+How to program a new input method
+
+  An input method must provide two functions:
+
+  void init(void);
+  void feed(unsigned key, FILE *output);
+
+  The init function gets called when the user switches to that input method
+  (even if it is from the same input method). Termim is not threaded nor
+  reentrant nor whatever, and any state may be stored in static variables.
+  Note that there is no exit function.
+
+  The feed function gets called when the user press a key that is not
+  handled by the binding mechanism (so most of the keys). The key argument
+  is the key (no grouping of UTF-8 input is done, but escape sequences are
+  approximatively detected and sent verbatim to the inner terminal without
+  filtering). The output FILE * stream is connected to the inner terminal.
+  When the input method considers that the user has typed a character (or
+  several), it must write its UTF-8 representation to this stream. So the
+  noop input method will only do "putc(key, output);".
+
+  The input method must then be packed in a KeyHandler structure, and a
+  pointer to that structure added in the key_handlers array (defined in
+  termim.c).
+
+    struct KeyHandler {
+	const char *name;
+	void (*init)(void);
+	void (*feed)(unsigned, FILE *);
+    };
+    KeyHandler *key_handlers[];
+
+
+  The input method can use the following functions to avoid reinventing the
+  wheel:
+
+    int to_utf8(unsigned character, unsigned char *buffer);
+
+      Converts the Unicode character character into UTF-8 and stores the result
+      in buffer, with a trailing zero character. Returns the length in bytes of
+      the UTF-8 code (not including the zero). Buffer must be big enough (that
+      is 7 bytes, or less if you know character really good).
+
+  The input method can use the following functions to give feedback to the
+  user (multiple choices, bell):
+
+    int screen_height;
+    int screen_width;
+
+      This is the size of the terminal. Normally, the input method should
+      not use screen_height, but screen_width can be useful when writing to
+      the status line. It is acceptable to consider that screen_width is at
+      least 80.
+
+    FILE *status_line(void);
+
+      Returns a stream connected to the outer terminal, with the cursor on
+      the bottom status line. This stream can be used write some message to
+      the user, with the condition that no vertical cursor movement is done.
+      This function also clears the status line.
+
+      Bevare: it is not possible to save and restor character attributes
+      (color, bold...), so it is not allowed to change them, and it is
+      _possible_ that the text on the status line will be of strange color.
+      There is no simple solution for that (and I do *not* want any
+      non-simple solution).
+
+    void flush_status_line(void);
+
+      This function must be called after the message on the status line has
+      been written. It flushes the stream and restores the cursor position.
+
+    void status_line_say(const char *text);
+
+      This is a shortcut for:
+
+	say = status_line();
+	fputs(text);
+	flush_status_line();
+
+  Using the macro directive, the user can map keys or keys sequences to
+  special named keys. New specific special keys can be added to the
+  SpecialKey enumeration defined in termim.h, along with their name in the
+  special_keys structure in config_file.c.

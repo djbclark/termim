@@ -1,0 +1,19 @@
+The data files used by some input methods, including tonepy and japanese,
+are raw data, and therfore in the public domain.
+
+They have been built with the help of the following sources:
+
+- The Unicode standard and the Unihan character database.
+  http://www.unicode.org/
+
+- CXterm input methods dictionary.
+  http://cxterm.sourceforge.net/
+
+- Emacs Mule input methods dictionary.
+  http://www.emacs.org/
+
+- Pubdicplus dictionary.
+  http://www.freewnn.org/
+
+- Edict dictionary.
+  http://www.csse.monash.edu.au/~jwb/edict.html

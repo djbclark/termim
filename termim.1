@@ -1,0 +1,230 @@
+.TH TERMIM 1 "2002-11-06" "Nicolas George"
+.SH NAME
+termim \- terminal input method
+.SH SYNOPSIS
+.B termim
+.SH DESCRIPTION
+The
+.B termim
+program allows to type stange languages, like Chinese, in
+standard terminals. The only requirement is that the terminal uses UTF-8 and
+understands a few really standard escape sequences. It does not relies on
+complex protocols like XIM nor requires special capabilities from the
+applications like Emacs' Mule.
+.SH USAGE
+Just start
+.B termim
+and type using the configured input methods. 
+.SH CONFIGURATION
+On startup,
+.B termim
+reads a configuration file describing the keyboard
+mapings. Il the environment variable
+.B TERMIMRC
+is set, this is the name
+of the file. Else,
+.I ~/.termimrc
+and
+.I /usr/local/etc/termimrc/
+(YMMV) are tried. This section describes the syntax of the configuration
+file.
+.P
+Empty lines are ignored, comment start with a
+.B #
+end at the end of
+line, white space is free.  The following directives are defined:
+.TP 5
+\fBmap "\fIname\fP"
+Starts a new keymap called
+.IR name .
+All following directives until the
+next
+.B map
+applies to that keymap. The first defined keymap is the one active on
+startup.
+.TP 5
+\fBkey "\fIseqence\fP" \fIaction\fP
+Binds a key. The
+.I sequence
+is the sequence of keys that will be read
+from the terminal. If you want to bind a special key, you must provide its
+escape sequence. The
+.IR action s
+are:
+.RS
+.TP 5
+\fBset_map "\fIname\fP"
+Changes the keymap to the map
+.IR name .
+.TP 5
+\fBstring "\fIstring\fP"
+Sends
+.I strings
+to the application.
+.TP 5
+\fBmacro\fP \fIkey\fP [\fIkey\fP...]
+Simulate the press of the named keys. Unlike the
+.B string
+action, they are fed to the binding and input method mechanism. The
+.IR key s
+can be a number or the name of a special key. Currently, only one named key
+exists:
+.BR compose .
+.RE
+.TP 5
+\fBdefault "\fIname\fP"
+Sets the default key handler for the keymap. Any key not handled by the key
+binding mechanism will be fed to that handler. See the
+.B input methods
+section for available handlers.
+.P
+Strings (for key escape sequences,
+.B action
+directives, keymap and
+handlers names) are given in double quotes. The backslash character enables
+to insert special characters:
+.BR \e\e ,
+.BR \e" ,
+.BR \en ,
+.BR \er ,
+.BR \ee
+stand respectively for
+.B \fB\e\fP
+(0x5C),
+.B \fB"\fP
+(0x22), LF (0x0A), CR (0x0D) and escape (0x1B),
+.BI \ex XY
+stands for the character
+.RI 0x XY ,
+and
+.BI \eu number \e
+stands for the UTF-8 representation of the Unicode character
+.RI U+ number
+.RI ( number
+is in hexadecimal, the backslash at the end is optional if the next
+character is not an hexadecimal digit).
+.SH "INPUT METHODS"
+The true input methods are not handled by the key binding mechanism. The
+.B string
+and
+.B macro
+should not be used for more than a few shortcuts. The real methods for typing multiple languages are handled by the
+.B default
+setting. The following handlers are available.
+.SS COPY
+The name is
+.BR copy .
+This handler does not change anything: any key typed is sent to the
+application (unless it is caught by the binding system). This handler should
+be used for languages natively available on your terminal. It may be a good
+idea to use it as the handler for the first keymap.
+.SS WESTERN
+The name is
+.BR western .
+This handler provides western european support, using the
+.B compose
+named key for diacritics.
+.SS CYRILLIC
+The name is
+.BR cyrillic .
+This handler provides basic Cyrillic support using a simple key translation.
+.SS GREEK
+The name is
+.BR greek .
+This handler provides basic Greek support using a simple key translation.
+.SS THAI
+The name is
+.BR thai .
+This handler provides basic Thai support using a simple key translation.
+.SS ARABIC
+The name is
+.BR arabic .
+This handler provides basic Arabic support using a simple key translation.
+.SS HEBREW
+The name is
+.BR hebrew .
+This handler provides basic Hebrew support using a simple key translation.
+.SS TONEPY
+The name is
+.BR tonepy .
+This handler provides simplified Chinese using the Tonepy input method. The
+ideograms are typed using their prononciation (one or more letters and a
+digit). If there are several choices, a menu is printed on the status line,
+and it is possible to choose with a digit (space also selects the first
+choice). If there are more than ten choices,
+.BR > ,
+.B .
+and
+.B Tab
+switch to the next page and
+.B <
+and
+.B ,
+to the previous.
+.SS KOREAN
+The name is
+.BR korean .
+This handler provides Korean Hangul using translitteration. The
+.BR / ,
+.B |
+and
+.B -
+keys force the end of a character.
+.SS JAPANESE
+The name is
+.BR japanese .
+This handler allows one to input Japanese text - both kana and kanji. This is done using latin transliterations; this method is
+.B not
+suitable for use with a Japanese keyboard.
+.SH TIPS
+Keep the same keys to select the same keymaps. And alos define the key to
+select a keymap even in itself, so that key will always have the same
+effect.
+.SH BUGS
+For keycodes,
+.B termim
+does not use terminfo or termcap. This is not a bug, this a feature:
+.B termim
+tries to be as transparent as possible with strange escape sequence from the
+terminal, so that exotic sequences or local mappings are still available.
+.P
+After running
+.BR termim ,
+the terminal may be left in a strange state. In particular it has been reported that running
+.B less
+after having run
+.B vim
+inside
+.B termim 
+wound not print anything useful. Doing a soft reset of the terminal using
+.B ESC c
+should be enough to clean anything.
+.P
+On Solaris, the initial size of the terminal may be incorrect. The origin of
+the problem is yet unknown.
+.SH FILES
+.TP 5
+.I ~/.termimrc
+User configuration file.
+.TP 5
+.I /usr/local/etc/termimrc
+System configuration file.
+.SH ENVIRONMENT
+.TP 5
+.B TERMIMRC
+Configuration file.
+.SH AUTHORS
+.B Nicolas George
+.I <nicolas.george@ens.fr>
+.P
+.B Denis Auroux
+.I <auroux@math.polytechnique.fr>
+.P
+.B Jean Marot
+.I <marot@quatramaran.ens.fr>
+.P
+Special thanks to
+.B Arthur Reutenauer
+.I <arthur.reutenauer@ens.fr>
+.SH "SEE ALSO"
+.BR xterm (1x)

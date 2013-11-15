@@ -1,0 +1,21 @@
+#!/usr/bin/perl -w
+
+###########################################################################
+# Terminal Input Method
+# (C) Nicolas George, 2002-11-03
+# tonepy_data_to_c: convert tonepy data to C code
+###########################################################################
+
+my @t = ();
+while(<>) {
+  die "Syntax error: $.\n" unless
+    s/^(\w+)\t((?:U\+[0-9A-F]+ )*U\+[0-9A-F]+)$/const ushort ${1}[] = { $2 };/;
+  push @t, $1;
+  s/U\+([0-9A-F]+)/0x$1,/g;
+  print;
+}
+print "const Tonepy tonepy_data[] = {\n";
+for (@t) {
+  print "  { \"$_\", $_, sizeof($_) / sizeof(ushort) },\n";
+}
+print "};\n";

@@ -1,0 +1,188 @@
+###########################################################################
+# Terminal Input Method
+# (C) Nicolas George, 2002-11-03
+# termimrc: sample termirc
+###########################################################################
+
+# Defines the "direct" keymap.
+
+map "direct"
+
+  # F1 keeps direct (so it is not a problem to press F1 several times).
+  key "\EOP" set_map "direct"
+
+  # F2 e switches to western
+  key "\EOQe" set_map "western"
+
+  # F2 c switches to cyrillic
+  key "\EOQc" set_map "cyrillic"
+
+  # F2 g switches to greek
+  key "\EOQg" set_map "greek"
+
+  # F2 t switches to thai
+  key "\EOQt" set_map "thai"
+
+  # F2 a switches to arabic
+  key "\EOQa" set_map "arabic"
+
+  # F2 h switches to hebrew
+  key "\EOQh" set_map "hebrew"
+
+  # F3 c switches to tonepy.
+  key "\EORc" set_map "tonepy"
+
+  # F3 k switches to Korean.
+  key "\EORk" set_map "korean"
+
+  # F3 h switches to Hangul.
+  key "\EORh" set_map "hangul"
+
+  # F3 j switches to Japanese.
+  key "\EORj" set_map "japanese"
+
+  # Default key behaviour is "copy": pass keys through without interpreting.
+  default "copy"
+
+# Defines the "tonepy" keymap.
+
+map "western"
+  key "\EOP" set_map "direct"
+  key "\EOQe" set_map "western"
+  key "\EOQc" set_map "cyrillic"
+  key "\EOQg" set_map "greek"
+  key "\EOQt" set_map "thai"
+  key "\EOQa" set_map "arabic"
+  key "\EOQh" set_map "hebrew"
+  key "\EORc" set_map "tonepy"
+  key "\EORk" set_map "korean"
+  key "\EORh" set_map "hangul"
+  key "\EORj" set_map "japanese"
+  key "\x0B" macro compose # ^K acts as a compose key
+  default "western"
+
+map "cyrillic"
+  key "\EOP" set_map "direct"
+  key "\EOQe" set_map "western"
+  key "\EOQc" set_map "cyrillic"
+  key "\EOQg" set_map "greek"
+  key "\EOQt" set_map "thai"
+  key "\EOQa" set_map "arabic"
+  key "\EOQh" set_map "hebrew"
+  key "\EORc" set_map "tonepy"
+  key "\EORk" set_map "korean"
+  key "\EORh" set_map "hangul"
+  key "\EORj" set_map "japanese"
+  default "cyrillic"
+
+map "greek"
+  key "\EOP" set_map "direct"
+  key "\EOQe" set_map "western"
+  key "\EOQc" set_map "cyrillic"
+  key "\EOQg" set_map "greek"
+  key "\EOQt" set_map "thai"
+  key "\EOQa" set_map "arabic"
+  key "\EOQh" set_map "hebrew"
+  key "\EORc" set_map "tonepy"
+  key "\EORk" set_map "korean"
+  key "\EORh" set_map "hangul"
+  key "\EORj" set_map "japanese"
+  default "greek"
+
+map "thai"
+  key "\EOP" set_map "direct"
+  key "\EOQe" set_map "western"
+  key "\EOQc" set_map "cyrillic"
+  key "\EOQg" set_map "greek"
+  key "\EOQt" set_map "thai"
+  key "\EOQa" set_map "arabic"
+  key "\EOQh" set_map "hebrew"
+  key "\EORc" set_map "tonepy"
+  key "\EORk" set_map "korean"
+  key "\EORh" set_map "hangul"
+  key "\EORj" set_map "japanese"
+  default "thai"
+
+map "arabic"
+  key "\EOP" set_map "direct"
+  key "\EOQe" set_map "western"
+  key "\EOQc" set_map "cyrillic"
+  key "\EOQg" set_map "greek"
+  key "\EOQt" set_map "thai"
+  key "\EOQa" set_map "arabic"
+  key "\EOQh" set_map "hebrew"
+  key "\EORc" set_map "tonepy"
+  key "\EORk" set_map "korean"
+  key "\EORh" set_map "hangul"
+  key "\EORj" set_map "japanese"
+  default "arabic"
+
+map "hebrew"
+  key "\EOP" set_map "direct"
+  key "\EOQe" set_map "western"
+  key "\EOQc" set_map "cyrillic"
+  key "\EOQg" set_map "greek"
+  key "\EOQt" set_map "thai"
+  key "\EOQa" set_map "arabic"
+  key "\EOQh" set_map "hebrew"
+  key "\EORc" set_map "tonepy"
+  key "\EORk" set_map "korean"
+  key "\EORh" set_map "hangul"
+  key "\EORj" set_map "japanese"
+  default "hebrew"
+
+map "tonepy"
+  key "\EOP" set_map "direct"
+  key "\EOQe" set_map "western"
+  key "\EOQc" set_map "cyrillic"
+  key "\EOQg" set_map "greek"
+  key "\EOQt" set_map "thai"
+  key "\EOQa" set_map "arabic"
+  key "\EOQh" set_map "hebrew"
+  key "\EORc" set_map "tonepy"
+  key "\EORk" set_map "korean"
+  key "\EORh" set_map "hangul"
+  key "\EORj" set_map "japanese"
+  default "tonepy"
+
+map "korean"
+  key "\EOP" set_map "direct"
+  key "\EOQe" set_map "western"
+  key "\EOQc" set_map "cyrillic"
+  key "\EOQg" set_map "greek"
+  key "\EOQt" set_map "thai"
+  key "\EOQa" set_map "arabic"
+  key "\EOQh" set_map "hebrew"
+  key "\EORc" set_map "tonepy"
+  key "\EORk" set_map "korean"
+  key "\EORh" set_map "hangul"
+  key "\EORj" set_map "japanese"
+  default "korean"
+
+map "hangul"
+  key "\EOP" set_map "direct"
+  key "\EOQe" set_map "western"
+  key "\EOQc" set_map "cyrillic"
+  key "\EOQg" set_map "greek"
+  key "\EOQt" set_map "thai"
+  key "\EOQa" set_map "arabic"
+  key "\EOQh" set_map "hebrew"
+  key "\EORc" set_map "tonepy"
+  key "\EORk" set_map "korean"
+  key "\EORh" set_map "hangul"
+  key "\EORj" set_map "japanese"
+  default "hangul"
+
+map "japanese"
+  key "\EOP" set_map "direct"
+  key "\EOQe" set_map "western"
+  key "\EOQc" set_map "cyrillic"
+  key "\EOQg" set_map "greek"
+  key "\EOQt" set_map "thai"
+  key "\EOQa" set_map "arabic"
+  key "\EOQh" set_map "hebrew"
+  key "\EORc" set_map "tonepy"
+  key "\EORk" set_map "korean"
+  key "\EORh" set_map "hangul"
+  key "\EORj" set_map "japanese"
+  default "japanese"

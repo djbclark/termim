@@ -1,0 +1,50 @@
+This input method allows one to type Hangul syllables (or elements) using
+a standard Korean keyboard layout.
+
+Note that your keyboard must be, if not a Korean keyboard, at least
+configured to use a QWERTY layout; otherwise some keys will be misplaced. 
+
+Unless you are Korean and/or familiar to the layout of Korean keyboards, 
+this is probably not the best input method for you: try the "korean" input
+method (based on transliteration) instead.
+
+The composition process requires a lookahead of a syllable; the Hangul
+elements retained in the buffer are displayed on the status line at the
+bottom of the screen. 
+
+The backspace key (or control-H) removes a character from the lookahead
+buffer if it is not empty, else it is passed on to the application.
+Control-C, control-D and control-G empty the lookahead buffer if it is not
+empty, else they are passed on to the application.
+
+If a syntax error occurs in the input (a vowel without an initial consonant,
+or too many consecutive consonants), the elements that cannot fit into a
+syllable are output directly (uncombined).
+
+Composed final consonants and composed vowels are formed by typing the two
+elements consecutively.
+
+Special key: [Z] (capital Z) protects the following key, which is handled
+as is without any processing.
+
+Keyboard layout:
+---------------
+Consonants:
+     ㄱ ㄲ ㄴ ㄷ ㄸ ㄹ ㅁ ㅂ ㅃ ㅅ ㅆ ㅇ ㅈ ㅉ ㅊ ㅋ ㅌ ㅍ ㅎ
+KEY: r  R  s  e  E  f  a  q  Q  t  T  d  w  W  c  z  x  v  g
+
+Vowels:
+     ㅏ ㅑ ㅓ ㅔ ㅖ ㅕ ㅗ ㅛ ㅜ ㅠ ㅡ ㅣ ㅐ ㅒ
+KEY:  k  i  j  p  P  u  h  y  n  b  m  l  o  O
+
+
+Full layout:
+    ㅂㅃ ㅈㅉ ㄷㄸ ㄱㄲ ㅅㅆ  ㅛ   ㅕ   ㅑ  ㅐㅒ ㅔㅖ
+    q/Q  w/W  e/E  r/R  t/T    y    u    i   o/O  p/P
+
+       ㅁ   ㄴ   ㅇ   ㄹ   ㅎ   ㅗ   ㅓ   ㅏ   ㅣ
+       a    s    d    f    g     h    j    k    l
+
+         ㅋ*   ㅌ   ㅊ   ㅍ   ㅠ   ㅜ   ㅡ
+         z/Z   x    c    v     b    n    m
+

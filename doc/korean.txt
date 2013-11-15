@@ -1,0 +1,113 @@
+This input method allows one to type Hangul syllables using a Western
+keyboard and transliteration. In most cases, typing the latin alphabet
+transliteration (always in lowercase) of given Korean words should be
+sufficient to obtain a correct output. 
+
+If you are Korean and/or familiar to the layout of Korean keyboards, then
+this is probably not the best input method for you: try the "hangul" input
+method instead.
+
+The transliteration process requires a lookahead of a syllable or so;
+the typed text and corresponding Hangul elements retained in the buffer
+are displayed on the status line at the bottom of the screen. For example,
+if you type "hang", the status line should display something like
+
+hang         : ㅎㅏㄴㄱ 
+
+If you then type a vowel, the syllable 한 ("han") will be formed, and  
+the lookahead buffer will be shifted accordingly; otherwise, consonants
+and non-letter characters will cause the syllable 항 ("hang") to be formed.
+
+Syllable breaks can be forced by using any of [/], [-], or [|], in those
+cases where the automatic syllable breaking gives unsatisfactory results.
+Entering one of these characters causes the lookahead buffer to be flushed;
+the break character is output only if the lookahead buffer was empty.
+You can only enter complete valid syllables, not isolated Hangul elements.
+Most usual transliterations should be accepted, and some unusual ones as
+well, but be aware that ㅓ can only be obtained by typing "eo" ("o" will
+yield ㅗ), and a few other similar subtleties (see below for a full list 
+of accepted transliterations).
+
+The backspace key (or control-H) removes a character from the lookahead
+buffer if it is not empty, else it is passed on to the application.
+Control-C, control-D and control-G empty the lookahead buffer if it is not
+empty, else they are passed on to the application.
+
+List of accepted transliterations for each Hangul element:
+----------------------------------------------------------
+
+Initial consonants:
+
+ㄱ    k    g
+ㄲ    kk   gg
+ㄴ    n
+ㄷ    d    t
+ㄸ    dd   tt
+ㄹ    l    r
+ㅁ    m
+ㅂ    p    b
+ㅃ    pp   bb
+ㅅ    s    sh
+ㅆ    ss   ssh  shsh
+ㅇ    (no input)
+ㅈ    j    ch   ts
+ㅉ    jj   chch tss
+ㅊ    j'   ch'  tch  tsh  jh
+ㅋ    k'   g'   kh
+ㅌ    t'   th
+ㅍ    p'   f    ph
+ㅎ    h
+
+Vowels:
+
+ㅏ    a
+ㅐ    ae
+ㅑ    ya   ia
+ㅒ    yae  iae
+ㅓ    eo
+ㅔ    e
+ㅕ    yeo  ieo
+ㅖ    ye   ie
+ㅗ    o
+ㅘ    wa   oa
+ㅙ    wae  oae 
+ㅚ    oe   oi
+ㅛ    yo   io
+ㅜ    u
+ㅝ    wo   uo   weo  ueo
+ㅞ    we   ue
+ㅟ    wi   ui
+ㅠ    yu   iu
+ㅡ    eu
+ㅢ    yi   ee
+ㅣ    i
+
+Final consonants:
+
+ㄱ    k    g
+ㄲ    kk   gg
+ㄳ    ks   ksh  gs   gsh
+ㄴ    n
+ㄵ    nj   nch  nts
+ㄶ    nh   n'
+ㄷ    d    t
+ㄹ    l    r
+ㄺ    lk   rk   lg   rg
+ㄻ    lm   rm
+ㄼ    lp   rp   lb   rb
+ㄽ    ls   rs   lsh  rsh
+ㄾ    lt'  rt'  lth  rth
+ㄿ    lp'  rp'  lf   rf   lph  rph
+ㅀ    lh   rh   l'   r'
+ㅁ    m
+ㅂ    p    b
+ㅄ    ps   bs   psh  bsh
+ㅅ    s    sh
+ㅆ    ss   ssh  shsh
+ㅇ    ng
+ㅈ    j    ch   ts
+ㅊ    j'   ch'  tch  tsh  jh
+ㅋ    k'   g'   kh
+ㅌ    t'   th
+ㅍ    p'   f    ph
+ㅎ    h

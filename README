@@ -1,0 +1,43 @@
+Terminal Input Method
+(C) Nicolas George
+
+What is it?
+
+  Termim is a program that enable to type strange languages not available on
+  the keyboard in any UTF-8 terminal or terminal emulator, including XTerm
+  and the Linux console.
+
+How does it works?
+
+  Termim runs on a terminal device, let us call it the outer terminal. It
+  creates a pseudo terminal device, let us call it the inner terminal.
+  Termim passes all data from the inner terminal to the outer terminal, so
+  the output of the running applications is totally unaffected. But user
+  input from the outer terminal is filtered using various "input methods"
+  and converted into differents characters in UTF-8.
+
+What does it require to work?
+
+  Any modern Unix-like operating system. This includes Linux (2.2 and later)
+  and Solaris (at least 7 and later). As a special exception, tihs will also
+  work on BSD (at least OpenBSD >= 2.7 and FreeBSD >= 4.5; you need to call
+  Makefile with "LIBS=-lutil").
+
+  A terminal (or terminal emulator) working with UTF-8 and recognizing a few
+  basic ANSI. This includes recent XTerm from XFree86 and probably the Linux
+  console for 2.2 and later (but I did not manage to load the correct font
+  to test).
+
+  And that is all.
+
+  In order to build Termim, you will need also a C compiler and a Perl
+  interpreter.
+
+What languages does it handle?
+
+  The following input methods are available: western, greek, cyrillic,
+  hebrew, arabic, thai, hangul, korean, japanese, tonepy (simplified
+  Chinese).
+
+  New input methods can easyly be added, since Termim is essencially
+  modular.

@@ -1,0 +1,17 @@
+If you read that, then you have already downloaded and unpacked the source
+archive. Process with these steps:
+
+1. Make sure you have a working build environment: C compiler and perl 5
+   interpreter.
+
+2. Edit the Makefile to set up the build options. This include compiler and
+   linker options, and the target directories. Note that for BSD systems,
+   you must add -lutil to LIBS.
+
+3. Type "make".
+
+4. Test the result with "TERMIMRC=termimrc ./termim" (or anything similar
+   that works with your particular shell) in an UTF-8 terminal.
+
+5. Type "make install", or copy yourself the binary, the man page and the
+   default config file.
